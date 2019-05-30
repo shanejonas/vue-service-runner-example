@@ -1,9 +1,9 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <input v-model="address" placeholder="address" />
-    <div>Address: {{ address }}</div>
-    <div>Balance: {{ balance }}</div>
+    <input v-model="wallet.address" placeholder="address" />
+    <div>Address: {{ wallet.address }}</div>
+    <div>Balance: {{ wallet.balance }}</div>
     <button v-on:click="getBalance">Get Balance</button>
   </div>
 </template>
@@ -15,27 +15,32 @@ import ERPC from '@etclabscore/ethereum-json-rpc';
 
 const erpc = new ERPC({
   transport: {
-    type: "http",
-    host: "localhost",
+    type: 'http',
+    host: 'localhost',
     port: 8545
   }
 });
 
+export interface Wallet {
+  balance: string;
+  address: string;
+}
+
 @Component
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
-  private balance!: string;
-  private address!: string;
-  private data() {
-    return {
-      balance: 0,
-      address: "" as string
+  private wallet: Wallet;
+  constructor(...args: any) {
+    super(...args);
+    this.wallet = {
+      address: "",
+      balance: ""
     }
   }
   private async getBalance() {
     const blockNumber = await erpc.eth_blockNumber();
-    erpc.eth_getBalance(this.address, blockNumber).then((balance) => {
-      this.balance = new BN(balance.substring(2), "hex").toString();
+    erpc.eth_getBalance(this.wallet.address, blockNumber).then((balance) => {
+      this.wallet.balance = new BN(balance.substring(2), "hex").toString();
     });
   }
 }
