@@ -9,14 +9,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import BN from 'bn.js';
-import ERPC from '@etclabscore/ethereum-json-rpc';
+import { Component, Prop, Vue } from "vue-property-decorator";
+import BN from "bn.js";
+import ERPC from "@etclabscore/ethereum-json-rpc";
 
 const erpc = new ERPC({
   transport: {
-    type: 'http',
-    host: 'localhost',
+    type: "http",
+    host: "localhost",
     port: 8545
   }
 });
