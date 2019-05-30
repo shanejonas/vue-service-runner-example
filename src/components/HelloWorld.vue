@@ -39,9 +39,8 @@ export default class HelloWorld extends Vue {
   }
   private async getBalance() {
     const blockNumber = await erpc.eth_blockNumber();
-    erpc.eth_getBalance(this.wallet.address, blockNumber).then((balance) => {
-      this.wallet.balance = new BN(balance.substring(2), "hex").toString();
-    });
+    const balance = await erpc.eth_getBalance(this.wallet.address, blockNumber);
+    this.wallet.balance = new BN(balance.substring(2), "hex").toString();
   }
 }
 </script>
